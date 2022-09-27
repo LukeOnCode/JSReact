@@ -6,7 +6,7 @@ const {check, validationResult } = require('express-validator');
 
 // @route  POST api/users
 // @desc   Register user router
-// @access Public
+// @access Private
 router.get('/', (req, res) => {
     console.log(req.body);
     res.send('User route');
@@ -40,20 +40,21 @@ router.post(
                 console.log(`STOP ON ${prop.name}`);
                 return res.status(400).json({ errors: [{ msg: 'User already exist with same name' }] })
             }
-            
-            const avatar = gravatar.url(prop.email, {
-                s: '200',
-                r: 'pg',
-                d: 'mm'
-            })
         }
-        
+
         if(req.body.password){
             const salt = await bcrypt.genSalt(10);
             req.body.password = await bcrypt.hash(req.body.password, salt);
         }
+        
+        const avatar = gravatar.url(req.body.email, {
+            s: '200',
+            r: 'pg',
+            d: 'mm'
+        })
+
         i++;
-        users[`user_${i}`]= {email: req.body.email,name: req.body.name,pwd: req.body.password};            
+        users[`user_${i}`]= {email: req.body.email,name: req.body.name,avatar: avatar,pwd: req.body.password};            
         console.log(users);       
     
     res.send('User route');
