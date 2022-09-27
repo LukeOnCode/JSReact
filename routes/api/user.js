@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('config');
+const { v4: uuidv4 } = require('uuid');
 const {check, validationResult } = require('express-validator');
 
 // @route  POST api/users
@@ -54,11 +57,35 @@ router.post(
         })
 
         i++;
-        users[`user_${i}`]= {email: req.body.email,name: req.body.name,avatar: avatar,pwd: req.body.password};            
+        users[`user_${i}`]= {id: uuidv4(),email: req.body.email,name: req.body.name,avatar: avatar,pwd: req.body.password};            
         console.log(users);       
-    
-    res.send('User route');
-    }
+        
+
+
+        let keys = Object.keys(users);
+        let last = keys[keys.length-1];
+  
+            if (Object.hasOwn(users, last)) {
+                const element = users[last];
+                console.log('element');
+                console.log(element.id);
+                const payload = {
+                    user: {
+                        id: element.id
+                    }
+                }
+                jwt.sign(
+                    payload,
+                    config.get('jwtSecret'),
+                    { expiresIn: 360000 },
+                    ( err, token ) => {
+                        if(err) throw err;
+                        res.json({ token })
+                    }
+                );
+            }
+            }
+
 )
 
 module.exports = router;
