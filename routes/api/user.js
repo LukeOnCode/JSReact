@@ -7,11 +7,11 @@ const config = require('config');
 const { v4: uuidv4 } = require('uuid');
 const {check, validationResult } = require('express-validator');
 const {time, writeToFile} = require('../../utils/object_utils')
+
 // @route  POST api/users
 // @desc   Register user router
 // @access Private
 router.get('/', (req, res) => {
-    console.log(req.body);
     res.send('User route');
 })
 
@@ -32,8 +32,7 @@ router.post(
 
         for (const key in users) {
             const prop = users[key];
-            console.log(`${key}: ${prop.email}`);
-            console.log(`${prop.email} and ${req.body.email}`);
+
             if(prop.email === req.body.email){
                 console.log(`STOP ON ${prop.email}`);    
                 return res.status(400).json({ errors: [{ msg: 'User already exist with same email' }] })
