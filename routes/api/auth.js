@@ -4,7 +4,6 @@ const auth = require('../../middleware/auth');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const { v4: uuidv4 } = require('uuid');
 const {check, validationResult } = require('express-validator');
 const {readFromFile} = require('../../utils/object_utils')
 
@@ -12,7 +11,6 @@ const {readFromFile} = require('../../utils/object_utils')
 // @desc   AUTH router for token 
 // @access public
 router.get('/', auth, (req, res) => {
-    console.log();
     try {
         console.log(req.user)
         res.json(req.user)
@@ -24,14 +22,6 @@ router.get('/', auth, (req, res) => {
 // @route  POST api/auth
 // @desc   AUTH router with login
 // @access public
-/*
-router.post('/', async (req, res) => {
-    let users = await readFromFile();
-    console.log(users.users);
-
-
-})
-*/
 router.post(
     '/',
     [
@@ -61,16 +51,28 @@ router.post(
                     if(!pwd_ok){
                         res.status(400).json({ msg: "wrong credentials" })
                     }
-                    
-                    if(pwd_ok){
-                        res.json(users.users[user])
+                    const payload = {
+                        user: {
+                            id: users.users[user].id,
+                            email: users.users[user].email,
+                            name: users.users[user].name,
+                            date: users.users[user].date,
+                            avatar: users.users[user].avatar
+                        }
                     }
-                }else{
-                    res.status(400).json({ msg: "wrong credentials" })
+                    jwt.sign(
+                        payload,
+                        config.get('jwtSecret'),
+                        { expiresIn: 360000 },
+                        ( err, token ) => {
+                            if(err) throw err;
+                            res.json({ token })
+                        }
+                    );
                 }
-            }  
+            }
         } catch (error) {
-        console.log(error);
+            console.log(error);
         }
     }
 )
