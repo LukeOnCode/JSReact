@@ -14,7 +14,11 @@ router.get('/', (req, res) => {
     console.log(req.body);
     res.send('User route');
 })
-
+function time(){
+    const day = new Date().toLocaleDateString();
+    const time = new Date().toLocaleTimeString();
+    return day +'-'+ time 
+}
 let users = {};
 let i = 0;
 router.post(
@@ -57,7 +61,14 @@ router.post(
         })
 
         i++;
-        users[`user_${i}`]= {id: uuidv4(),email: req.body.email,name: req.body.name,avatar: avatar,pwd: req.body.password};            
+        users[`user_${i}`] = {
+            id: uuidv4(),
+            email: req.body.email,
+            name: req.body.name,
+            avatar: avatar,
+            pwd: req.body.password,
+            date: time()
+        };            
         console.log(users);       
         
 
@@ -67,11 +78,13 @@ router.post(
   
             if (Object.hasOwn(users, last)) {
                 const element = users[last];
-                console.log('element');
-                console.log(element.id);
                 const payload = {
                     user: {
-                        id: element.id
+                        id: element.id,
+                        email: element.email,
+                        name: element.name,
+                        avatar: avatar,
+                        date: element.date
                     }
                 }
                 jwt.sign(
