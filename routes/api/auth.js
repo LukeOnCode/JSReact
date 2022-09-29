@@ -52,7 +52,7 @@ router.post(
                     let pwd_ok = await bcrypt.compare(req.body.password, users.users[user].pwd)
                     
                     if(!pwd_ok){
-                        res.status(400).json({ msg: "wrong credentials" })
+                        return res.status(400).json({ msg: "wrong credentials" })
                     }
                     if(pwd_ok){
                         const payload = {
