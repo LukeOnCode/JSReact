@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const auth = require('../../middleware/auth')
 const {check, validationResult } = require('express-validator');
-const {readFromFile} = require('../../utils/object_utils')
+const {readFromFile, change} = require('../../utils/object_utils')
 
 // @route  GET api/profile/my_profile
 // @desc   profile router for user
@@ -41,7 +41,7 @@ router.post('/', [
             return res.status(400).json({ errors: errors.array()})
         }
         try {
-            const profile = await readFromFile();
+            let profile = await readFromFile();
             let user_profile;
             const {id} = req.user;
             //const {status, skills } = req.body;
@@ -55,6 +55,8 @@ router.post('/', [
                 }
                 let skills = req.body.skills.split(',').map(skill => skill.trim())
                 let status = req.body.status;
+                change(id,{status,skills});
+                profile.users[user_profile].profile.pop({status,skills})
                 profile.users[user_profile].profile.push({status,skills})
             res.json(profile.users[user_profile])
             }
@@ -62,6 +64,11 @@ router.post('/', [
             console.log(error);
             res.status(500).send('server error')
         }
+})
 
+
+router.get('/all', async (req, res) => {
+    const profile = await readFromFile();
+    res.json(profile)
 })
 module.exports = router;

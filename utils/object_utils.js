@@ -38,5 +38,29 @@ async function readFromFile(){
         console.log(error);   
     }
 }
-module.exports = {time , writeToFile, deleteObjectFile, readFromFile}
+
+async function change(id, arr){
+    try {
+        const read = await fs.readFile('./text_test.txt','utf8');
+        const obj = JSON.parse(read);
+        console.log(id, arr);
+        for (const key in obj) {
+            const prop = obj[key]
+            if(prop.id === id){
+                prop.profile.pop();
+                prop.profile.push(arr)
+            }
+        }
+        const data = JSON.stringify(obj);
+        await fs.writeFile('./text_test.txt', '')
+        console.log('read file empty' + read);
+        await fs.writeFile('./text_test.txt', data)
+        console.log('read file on chainge' + read);
+        console.log(data);
+        console.log('end change file');
+    } catch (error) {
+        console.log(error);
+    }
+}
+module.exports = {time , writeToFile, deleteObjectFile, readFromFile, change}
 
