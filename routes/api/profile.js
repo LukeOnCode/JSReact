@@ -22,7 +22,6 @@ router.get('/', auth, async (req, res) => {
             }
         res.json(profile.users[user_profile])
         }
-        console.log(user_profile);
     } catch (error) {
         console.log(error);
         res.status(500).send('server error')
@@ -45,6 +44,7 @@ router.post('/', [
             const profile = await readFromFile();
             let user_profile;
             const {id} = req.user;
+            //const {status, skills } = req.body;
             for (const key in profile) {
                 const prop = profile[key];
                 for(const users in prop){
@@ -53,7 +53,9 @@ router.post('/', [
                         user_profile = users;
                     } 
                 }
-                profile.users[user_profile].profile.push({...req.body})
+                let skills = req.body.skills.split(',').map(skill => skill.trim())
+                let status = req.body.status;
+                profile.users[user_profile].profile.push({status,skills})
             res.json(profile.users[user_profile])
             }
         } catch (error) {

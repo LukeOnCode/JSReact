@@ -13,6 +13,6 @@ app.use('/api/auth', require('./routes/api/auth'))
 app.use('/api/profile', require('./routes/api/profile'))
 
 app.listen(PORT, () => {
-    deleteObjectFile();
+    //deleteObjectFile();
     console.log(`SERVER ON ${PORT} RUNNING`);
 })
