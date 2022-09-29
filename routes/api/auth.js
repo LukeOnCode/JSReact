@@ -74,9 +74,8 @@ router.post(
                             }
                         );
                     }
-                }
-                if(req.body.email !== prop.email){
-                    res.status(400).json({ msg: "wrong credentials" })
+                }else{
+                    console.log(`NOT THIS EMAIL ${prop.email}`);
                 }
             }
             console.log('AFTER FOR CYCLE');
@@ -86,3 +85,4 @@ router.post(
     }
 )
 module.exports = router;
+

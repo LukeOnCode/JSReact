@@ -1,11 +1,31 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
+const auth = require('../../middleware/auth')
+const {readFromFile} = require('../../utils/object_utils')
 
-// @route  GET api/profile
-// @desc   profile router
-// @access  private
-router.get('/', (req, res) => {
-    res.send('Profile route');
+// @route  GET api/profile/my_profile
+// @desc   profile router for user
+// @access private
+router.get('/', auth, async (req, res) => {
+    try {
+        const profile = await readFromFile();
+        let user_profile;
+        const {id} = req.user;
+        for (const key in profile) {
+            const prop = profile[key];
+            for(const users in prop){
+                const user = prop[users];
+                if(id === user.id){
+                    user_profile = users;
+                } 
+            }
+        res.json(profile.users[user_profile])
+        }
+        console.log(user_profile);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('server error')
+    }
 })
 
 module.exports = router;
