@@ -74,5 +74,17 @@ async function changeDelete(user){
         console.log(error);
     }
 }
+async function changeDeletePost(user){
+    try {
+        const read = await fs.readFile('./text_test.txt','utf8');
+        const obj = JSON.parse(read);
+        obj[user].post = [];
+        const data = JSON.stringify(obj);
+        await fs.writeFile('./text_test.txt', '')
+        await fs.writeFile('./text_test.txt', data)
+    } catch (error) {
+        console.log(error);
+    }
+}
 module.exports = {time , writeToFile, deleteObjectFile, readFromFile, change, changeDelete}
 

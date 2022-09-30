@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('../../middleware/auth')
 const {readFromFile, change} = require('../../utils/object_utils')
 const {check, validationResult} = require('express-validator')
+//TODO route.delete
 
 // @route  POST api/post
 // @desc   create user post 
