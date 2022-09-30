@@ -5,7 +5,7 @@ const {check, validationResult } = require('express-validator');
 const {readFromFile, change} = require('../../utils/object_utils')
 
 // @route  GET api/profile/my_profile
-// @desc   profile router for user
+// @desc   profile router for user with auth
 // @access private
 router.get('/', auth, async (req, res) => {
     try {
@@ -56,6 +56,7 @@ router.post('/', [
                 let skills = req.body.skills.split(',').map(skill => skill.trim())
                 let status = req.body.status;
                 change(id,{status,skills});
+                console.log(profile.users[user_profile].profile);
                 profile.users[user_profile].profile.pop({status,skills})
                 profile.users[user_profile].profile.push({status,skills})
             res.json(profile.users[user_profile])
@@ -66,9 +67,30 @@ router.post('/', [
         }
 })
 
-
+// @route  GET api/profile/all_profile
+// @desc   profile router for user to find all users
+// @access private
 router.get('/all', async (req, res) => {
     const profile = await readFromFile();
     res.json(profile)
+})
+
+// @route  GET api/profile/user/user_id
+// @desc   profile router for user
+// @access private
+router.get('/user/:user_id',async (req, res)=> {
+    const obj = await readFromFile();
+    const id = req.params.user_id;
+    let user_profile;
+    for (const key in obj) {
+        const prop = obj[key];
+        for(const users in prop){
+            const user = prop[users];
+            if(id === user.id){
+                user_profile = users;
+            } 
+        }
+    res.json(obj.users[user_profile])
+    }
 })
 module.exports = router;
