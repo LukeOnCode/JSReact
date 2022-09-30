@@ -55,7 +55,8 @@ router.post('/', [
                 }
                 let skills = req.body.skills.split(',').map(skill => skill.trim())
                 let status = req.body.status;
-                change(id,{status,skills});
+                let param = 'profile';
+                change(id,{status,skills}, param);
                 console.log(profile.users[user_profile].profile);
                 profile.users[user_profile].profile.pop({status,skills})
                 profile.users[user_profile].profile.push({status,skills})

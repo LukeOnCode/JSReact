@@ -39,7 +39,7 @@ async function readFromFile(){
     }
 }
 
-async function change(id, arr){
+async function change(id, arr, param){
     try {
         const read = await fs.readFile('./text_test.txt','utf8');
         const obj = JSON.parse(read);
@@ -47,8 +47,8 @@ async function change(id, arr){
         for (const key in obj) {
             const prop = obj[key]
             if(prop.id === id){
-                prop.profile.pop();
-                prop.profile.push(arr)
+                prop[param].pop();
+                prop[param].push(arr)
             }
         }
         const data = JSON.stringify(obj);
