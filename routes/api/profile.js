@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const auth = require('../../middleware/auth')
 const {check, validationResult } = require('express-validator');
-const {readFromFile, change} = require('../../utils/object_utils')
+const {readFromFile, change, changeDelete} = require('../../utils/object_utils')
 
 // @route  GET api/profile/my_profile
 // @desc   profile router for user with auth
@@ -88,9 +88,30 @@ router.get('/user/:user_id',async (req, res)=> {
             const user = prop[users];
             if(id === user.id){
                 user_profile = users;
+                return res.json(obj.users[user_profile])
             } 
         }
-    res.json(obj.users[user_profile])
     }
+    return res.status(400).json({msg: "no user found"})
 })
+
+router.delete('/',auth, async (req, res)=> {
+    const obj = await readFromFile();
+    const {id} = req.user;
+    let user_profile;
+    for (const key in obj) {
+        const prop = obj[key];
+        for(const users in prop){
+            const user = prop[users];
+            if(id === user.id){
+                user_profile = users;
+                //delete obj.users[user_profile];
+                changeDelete(user_profile);
+                return res.json({msg: "User deleted"})
+            } 
+        }
+    }
+    return res.status(400).json({msg: "no user found"})
+})
+
 module.exports = router;
