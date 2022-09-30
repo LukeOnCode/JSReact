@@ -63,7 +63,8 @@ router.post(
             avatar: avatar,
             pwd: req.body.password,
             date: time(),
-            profile: []
+            profile: [],
+            posts:[]
         };            
         writeToFile(users);
         console.log(users);       
