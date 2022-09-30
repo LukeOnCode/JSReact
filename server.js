@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const {deleteObjectFile ,change} = require('./utils/object_utils')
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 //Init middleware
 app.use(express.json({ extended: false }))
 
