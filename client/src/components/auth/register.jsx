@@ -7,9 +7,9 @@ class Register extends Component{
 
     render(){
         return(
-            <div>hello</div>
+            <div>Register</div>
         );
     }
 }
 
-export default Navbar;
+export default Register;
