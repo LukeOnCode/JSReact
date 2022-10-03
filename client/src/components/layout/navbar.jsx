@@ -1,12 +1,18 @@
 import React, {Component} from "react";
 
 export default class Navbar extends Component{
-
     render(){
         return(
             
-            <div className="p-5 m-0 bg-blue-600">
-                <h1>Navbar</h1>
+            <div className="Navbar">
+                <h1>
+                    <a href="index.html">ToIndex</a>
+                </h1>
+                <ul>
+                    <li><a href="profiles.html">dev</a></li>
+                    <li><a href="register.html">dev</a></li>
+                    <li><a href="login.html">dev</a></li>
+                </ul>
             </div>
         );
     }
