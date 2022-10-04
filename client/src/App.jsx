@@ -9,7 +9,7 @@ import Login from './components/auth/login';
 class App extends Component{
   render() {
     return(
-      <div className="app">
+      <div className="app vh-100">
         <FirstNavbar />
         <Routes>
           <Route path="/" element={ <Landing/> } />
