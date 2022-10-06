@@ -2,9 +2,12 @@ const express = require('express');
 const app = express();
 const {deleteObjectFile ,change} = require('./utils/object_utils')
 const PORT = 5000;
+const cors = require('cors');
 //Init middleware
 app.use(express.json({ extended: false }))
-
+app.use(cors({
+    origin: '*'
+}))
 app.get('/', (req, res) => res.send('API running'));
 
 // Define Routes

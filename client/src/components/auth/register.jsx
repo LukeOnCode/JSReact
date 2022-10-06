@@ -1,52 +1,77 @@
 import React, {Component} from "react";
-import {Form, Button} from 'react-bootstrap';
+import {Form, Button, InputGroup} from 'react-bootstrap';
+import {Link} from 'react-router-dom';
+import axios from 'axios';
 
 export default class Register extends Component{
-
-    
-    state = {
-        name: '',
-        email: ''
+    constructor(props){
+        super(props);
+        this.state = {
+            name: '',
+            email: '',
+            password:'',
+            valid: false
+        }
     }
-
-    reg = (e) => this.setState({...this.state, [e.target.name]: e.target.value})
-    send = (e) => {
+    handleChange = (e) => this.setState({...this.state, [e.target.name]: e.target.value})
+    handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(this.state.email);
+        const form = e.currentTarget;
+        try {
+            const data = this.state;
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            if(form.checkValidity()){
+                const res = await axios.post(`http://localhost:5000/api/users`, data, config)
+                .then(res => {
+                    console.log(res);
+                    console.log(res.data);
+                })
+            }else{
+                this.setState({...this.state, valid: true})
+                console.log('error');
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
-    render(){
 
+    render(){
         return(
-        <Form>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form noValidate validated={this.state.valid} onSubmit={this.handleSubmit}>
+            {console.log(this.valid)}
+            <Form.Group className="mb-3" controlId="reg_name">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control onChange={this.reg } name='name' type="text" placeholder="Enter name" />
+                <InputGroup hasValidation>
+                    <Form.Control required onChange={this.handleChange } name='name' type="text" placeholder="Enter name" />
+                    <Form.Control.Feedback>Please provide name</Form.Control.Feedback>
+                </InputGroup>
             </Form.Group>
             
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" controlId="reg_email">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control onChange={this.reg}  name='email' type="email" placeholder="Enter email" />
-                <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-                </Form.Text>
+                <InputGroup>
+                    <Form.Control required onChange={this.handleChange}  name='email' type="email" placeholder="Enter email" />
+                    <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
+                    <Form.Control.Feedback>Please provide email</Form.Control.Feedback>
+                </InputGroup>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-3" controlId="reg_pwd_1">
                 <Form.Label>Password</Form.Label>
-                <Form.Control name='password' type="password" placeholder="Password" />
+                <InputGroup>
+                    <Form.Control required onChange={this.handleChange}  name='password' type="password" placeholder="Password" />
+                    <Form.Control.Feedback>Please provide password</Form.Control.Feedback>
+                </InputGroup>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control name='password2' type="password" placeholder="Password" />
-                <Form.Text className="text-muted">
-                    Insert password again
-                </Form.Text>
-            </Form.Group>
-
-            <Button onClick={this.send} variant="primary">
-                Submit
-            </Button>
+            <Button variant="primary" type="submit">Register</Button>
+            <Form.Text className="text-muted">
+                Already have an account? <Link to='/login'>Sign In</Link>
+            </Form.Text>
         </Form>
         );
     }
