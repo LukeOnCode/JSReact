@@ -5,6 +5,7 @@ import Landing from './components/layout/landing';
 import Register from './components/auth/register';
 import FirstNavbar from './components/layout/navbar';
 import Login from './components/auth/login';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component{
   render() {
