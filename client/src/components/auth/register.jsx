@@ -15,6 +15,7 @@ export default class Register extends Component{
             loading: false
         }
     }
+    
     handleChange = (e) => this.setState({...this.state, [e.target.name]: e.target.value})
     handleSubmit = async (e) => {
         e.preventDefault();
