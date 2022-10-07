@@ -5,7 +5,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { v4: uuidv4 } = require('uuid');
-const cookie = require('cookie')
 const {check, validationResult } = require('express-validator');
 const {time, writeToFile} = require('../../utils/object_utils')
 
@@ -30,7 +29,6 @@ router.post(
         if(!errors.isEmpty()){
             return res.status(400).json({ errors: errors.array() })
         }
-
         for (const key in users) {
             const prop = users[key];
 
@@ -89,7 +87,7 @@ router.post(
                 { expiresIn: 360000 },
                 ( err, token ) => {
                     if(err) throw err;
-                    res.json({ token })
+                    res.json( { token } )
                 }
             );
         }

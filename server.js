@@ -3,15 +3,11 @@ const app = express();
 const {deleteObjectFile ,change} = require('./utils/object_utils')
 const PORT = 5000;
 const cors = require('cors');
-const cookie = require('cookie');
-const cookieParser = require('cookie-parser');
+
 //Init middleware
 app.use(express.json({ extended: false }))
-app.use(cors({
-    origin: '*'
-}))
-app.use(cookieParser());
-app.get('/', (req, res) => res.send('API running'));
+app.use(cors({ origin: '*' }))
+app.get('/', (req, res) => res.send('API Running'));
 
 // Define Routes
 app.use('/api/users', require('./routes/api/user'))
