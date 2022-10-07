@@ -35,14 +35,13 @@ export default class Register extends Component{
                 console.log('error');
             }
         } catch (error) {
-            console.log(error);
+            console.log(error.response.data.errors[0]);
         }
     }
 
     render(){
         return(
         <Form noValidate validated={this.state.valid} onSubmit={this.handleSubmit}>
-            {console.log(this.valid)}
             <Form.Group className="mb-3" controlId="reg_name">
                 <Form.Label>Email address</Form.Label>
                 <InputGroup hasValidation>

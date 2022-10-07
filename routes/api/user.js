@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { v4: uuidv4 } = require('uuid');
+const cookie = require('cookie')
 const {check, validationResult } = require('express-validator');
 const {time, writeToFile} = require('../../utils/object_utils')
 
@@ -71,7 +72,6 @@ router.post(
 
         let keys = Object.keys(users);
         let last = keys[keys.length-1];
-  
         if (Object.hasOwn(users, last)) {
             const element = users[last];
             const payload = {
