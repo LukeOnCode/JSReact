@@ -13,9 +13,9 @@ const {readFromFile} = require('../../utils/object_utils')
 router.get('/', auth, (req, res) => {
     try {
         console.log(req.user)
-        res.json(req.user)
+        res.status(200).json(req.user)
     } catch (error) {
-        console.log(error);
+        res.status(400).json({msg: 'have no token'})
     }
 })
 

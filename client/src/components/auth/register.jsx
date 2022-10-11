@@ -3,6 +3,7 @@ import {Form, Button, InputGroup} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import SpinnerUi from "../ui_elements/spinner";
+import { useToken } from '../../utils/front_utils';
 
 export default class Register extends Component{
     constructor(props){
@@ -20,8 +21,8 @@ export default class Register extends Component{
     handleSubmit = async (e) => {
         e.preventDefault();
         const form = e.currentTarget;
-        this.setState({...this.state, loading: true})
         try {
+            this.state.loading = true
             const data = this.state;
             const config = {
                 headers: {
@@ -31,45 +32,50 @@ export default class Register extends Component{
             if(form.checkValidity()){
                 const res = await axios.post(`http://localhost:5000/api/users`, data, config)
                 .then(res => {
-                    localStorage.setItem('Token', JSON.stringify(res.data.token))
+                    console.log(res);
+                    console.log(res.data);
+                    useToken(res.data.token);
                 })
             }else{
-                this.setState({...this.state, valid: true})
+                this.validate(e);
                 console.log('error');
             }
-            this.setState({...this.state, loading: false})
         } catch (error) {
             console.log(error.response.data.errors[0]);
         }
+    
     }
+    validate = (e) => {
+        this.setState({ valid: true })
+        return;
+    }
+
 
     render(){
         return(
-        <div className="reg_layout"> 
-            {this.state.loading && <SpinnerUi />}
         <Form noValidate validated={this.state.valid} onSubmit={this.handleSubmit}>
+            { this.state.loading && <SpinnerUi /> }
             <Form.Group className="mb-3" controlId="reg_name">
                 <Form.Label>Name</Form.Label>
                 <InputGroup hasValidation>
                     <Form.Control required onChange={this.handleChange } name='name' type="text" placeholder="Enter name" />
-                    <Form.Control.Feedback>Please provide name</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">Please provide name</Form.Control.Feedback>
                 </InputGroup>
             </Form.Group>
             
             <Form.Group className="mb-3" controlId="reg_email">
                 <Form.Label>Email address</Form.Label>
-                <InputGroup>
+                <InputGroup hasValidation>
                     <Form.Control required onChange={this.handleChange}  name='email' type="email" placeholder="Enter email" />
-                    <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
-                    <Form.Control.Feedback>Please provide email</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">Please provide email</Form.Control.Feedback>
                 </InputGroup>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="reg_pwd_1">
                 <Form.Label>Password</Form.Label>
-                <InputGroup>
+                <InputGroup hasValidation>
                     <Form.Control required onChange={this.handleChange}  name='password' type="password" placeholder="Password" />
-                    <Form.Control.Feedback>Please provide password</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">Please provide password</Form.Control.Feedback>
                 </InputGroup>
             </Form.Group>
 
@@ -78,7 +84,6 @@ export default class Register extends Component{
                 Already have an account? <Link to='/login'>Sign In</Link>
             </Form.Text>
         </Form>
-        </div>
         );
     }
 }

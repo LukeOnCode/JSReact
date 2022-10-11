@@ -6,17 +6,13 @@ import Register from './components/auth/register';
 import FirstNavbar from './components/layout/navbar';
 import Login from './components/auth/login';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useToken } from '../src/utils/front_utils';
+import HomePage from './components/layout/home_page';
+import { ProtectedRoute } from './utils/front_utils';
 
 
 class App extends Component{
   constructor(props){
     super(props);
-  }
-  componentDidMount(){
-    if(localStorage.Token){
-      useToken(localStorage.Token);
-    }
   }
 
   render() {
@@ -27,6 +23,12 @@ class App extends Component{
           <Route path="/" element={ <Landing/> } />
           <Route path="/registration" element={<Register />} /> 
           <Route path="/login" element={<Login />} />
+          <Route path="/api/profile" element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }>
+          </Route>
         </Routes>
       </div>
     );
