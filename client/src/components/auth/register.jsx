@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import {Form, Button, InputGroup} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
+import {Form, Button, InputGroup, Nav} from 'react-bootstrap';
+import {Link, Navigate} from 'react-router-dom';
 import axios from 'axios';
 import SpinnerUi from "../ui_elements/spinner";
 import { useToken } from '../../utils/front_utils';
@@ -13,7 +13,8 @@ export default class Register extends Component{
             email: '',
             password:'',
             valid: false,
-            loading: false
+            loading: false,
+            token: null
         }
     }
     
@@ -32,14 +33,16 @@ export default class Register extends Component{
             if(form.checkValidity()){
                 const res = await axios.post(`http://localhost:5000/api/users`, data, config)
                 .then(res => {
-                    console.log(res);
-                    console.log(res.data);
                     useToken(res.data.token);
+                    localStorage.setItem('Token',`${res.data.token}`);
                 })
             }else{
                 this.validate(e);
                 console.log('error');
             }
+            const user_token = localStorage.getItem('Token')
+            this.setState({ token: user_token })
+            this.state.loading= false;
         } catch (error) {
             console.log(error.response.data.errors[0]);
         }
@@ -52,7 +55,10 @@ export default class Register extends Component{
 
 
     render(){
+        let {token} = this.state;
         return(
+        <>
+        { token && (<Navigate to="/api/profile" replace={true} />) }
         <Form noValidate validated={this.state.valid} onSubmit={this.handleSubmit}>
             { this.state.loading && <SpinnerUi /> }
             <Form.Group className="mb-3" controlId="reg_name">
@@ -84,6 +90,7 @@ export default class Register extends Component{
                 Already have an account? <Link to='/login'>Sign In</Link>
             </Form.Text>
         </Form>
+        </>
         );
     }
 }
