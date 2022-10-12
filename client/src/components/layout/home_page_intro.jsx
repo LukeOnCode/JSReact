@@ -8,23 +8,31 @@ export default class SelfIntro extends Component{
         super(props);
         this.state = {
             post: [{...this.props.post}],
-            isActive: true
+            users: [{...this.props.users}]
         }
     }
-    hideCard = () => {
-        this.setState({isActive: false})
+    active = () => {
+        localStorage.setItem('Banner', "false");
+        let locale = localStorage.getItem('Banner')
+        let div = document.querySelector('.card-banner');
+        if(locale === "false"){
+            div.setAttribute('id','hidden')
+        }
     }
+
     render(){
-        console.log(this.state);
-        console.log(this.state.post[0]);
+        let users = [];
+        users.push(this.state.users[0].users);
+        let maped = users[0];
+        console.log(users[0]);
         return(
-                <Container fluid="fluid" className="px-0 d-flex flex-column flex-sm-column flex-md-row vh-90">
-                    {
-                        this.state.post.map(el => 
-                        <Card className="mx-3 p-0" style={{ display: this.state.isActive ? 'block' : 'none' }}>
+                <Container fluid="fluid" id=""className="card-banner px-0 d-flex flex-column flex-sm-column flex-md-row vh-90">
+                    {   
+                    this.state.post.map(el=>  
+                            <Card className="mx-3 p-0 ">
                             <Card.Header className="d-flex align-items-center" as="h5">
                                     {el.name}
-                                    <Button onClick={this.hideCard} className="margin-inline-start" variant="light">
+                                    <Button onClick={this.active} className="margin-inline-start" variant="light">
                                         <FaRegWindowClose/>
                                     </Button>
                                 </Card.Header>
@@ -36,6 +44,11 @@ export default class SelfIntro extends Component{
                                 </Button>
                             </Card.Body>
                         </Card>
+                        ) 
+                    }
+                    {
+                        maped.map((el, i) => 
+                            <h1>{el.name}</h1>
                         )
                     }
                 </Container>   

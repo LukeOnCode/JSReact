@@ -8,17 +8,34 @@ import SelfIntro from "./home_page_intro";
 export default class HomePage extends Component{
     constructor(props){
         super(props);
-        this.state = ({ post: null })
+        this.state = ({ post: null, users: null })
         this.updateD = this.updateD.bind(this)
     }
     updateD = (data) => {
         this.setState({ post: data })
     }
+    updateU = (data) => {
+        this.setState({ users: data })
+    }
     componentDidMount(){
-        axios.get('http://localhost:5000/api/profile')
+        const token = localStorage.getItem("Token");
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "x-auth-token": token
+            }
+        }
+        axios.get('http://localhost:5000/api/profile', config)
         .then( (res) => {
             this.updateD(res.data)
         })
+        .catch(error => console.log(error))
+
+        axios.get('http://localhost:5000/api/profile/all',config)
+        .then((res) => {
+            this.updateU(res.data)
+        })
+        .catch(error => console.log(error))
     }
 
     render(){

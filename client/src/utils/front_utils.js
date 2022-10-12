@@ -51,3 +51,8 @@ export const getInfo = async token =>{
         console.log('error');
     }
 }
+export const setLocalBanner = token => {
+    if(token === false){
+        localStorage.setItem('Banner', false);
+    }
+}
