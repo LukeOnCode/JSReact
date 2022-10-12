@@ -34,6 +34,7 @@ export default class Register extends Component{
                 const res = await axios.post(`http://localhost:5000/api/users`, data, config)
                 .then(res => {
                     useToken(res.data.token);
+                    localStorage.clear();
                     localStorage.setItem('Token',`${res.data.token}`);
                 })
             }else{
@@ -42,7 +43,6 @@ export default class Register extends Component{
             }
             const user_token = localStorage.getItem('Token')
             this.setState({ token: user_token })
-            this.state.loading= false;
         } catch (error) {
             console.log(error.response.data.errors[0]);
         }
@@ -52,7 +52,6 @@ export default class Register extends Component{
         this.setState({ valid: true })
         return;
     }
-
 
     render(){
         let {token} = this.state;

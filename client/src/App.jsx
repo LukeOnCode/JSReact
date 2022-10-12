@@ -25,8 +25,8 @@ class App extends Component{
           <Route 
                 path="/api/profile" 
                 element={
-                  <ProtectedRoute>
-                    <HomePage />
+                  <ProtectedRoute {...this.state}>
+                    <HomePage/>
                   </ProtectedRoute>
                 } 
           />
