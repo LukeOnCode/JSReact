@@ -51,7 +51,9 @@ height: 70vh;;
 .se-card:nth-child(-n+2){
   margin-top: calc(100% - 80%);
 }
-
+.margin-inline-start{
+  margin-inline-start: auto;
+}
 @media screen and (max-width: 376px) {
 .button-ld{
   margin-top: calc(100% - 96%);
