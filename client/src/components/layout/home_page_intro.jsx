@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Link, Navigate} from 'react-router-dom';
 import {Container, Button, Card} from 'react-bootstrap';
 import {FaRegWindowClose} from 'react-icons/fa';
+import UsersAccount from "./users_account";
 
 export default class SelfIntro extends Component{
     constructor(props){
@@ -19,12 +20,7 @@ export default class SelfIntro extends Component{
             div.setAttribute('id','hidden')
         }
     }
-
     render(){
-        let users = [];
-        users.push(this.state.users[0].users);
-        let maped = users[0];
-        console.log(users[0]);
         return(
                 <Container fluid="fluid" id=""className="card-banner px-0 d-flex flex-column flex-sm-column flex-md-row vh-90">
                     {   
@@ -46,11 +42,8 @@ export default class SelfIntro extends Component{
                         </Card>
                         ) 
                     }
-                    {
-                        maped.map((el, i) => 
-                            <h1>{el.name}</h1>
-                        )
-                    }
+                    {this.state.users && <UsersAccount {...this.state}/>}
+
                 </Container>   
         );
     }
