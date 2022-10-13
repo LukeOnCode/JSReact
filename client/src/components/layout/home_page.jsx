@@ -10,6 +10,7 @@ export default class HomePage extends Component{
         super(props);
         this.state = ({ post: null, users: null })
         this.updateD = this.updateD.bind(this)
+        this.updateU = this.updateU.bind(this)
     }
     updateD = (data) => {
         this.setState({ post: data })
@@ -34,7 +35,6 @@ export default class HomePage extends Component{
         axios.get('http://localhost:5000/api/profile/all',config)
         .then((res) => {
             this.updateU(res.data)
-            console.log(res.data);
         })
         .catch(error => console.log(error))
     }
