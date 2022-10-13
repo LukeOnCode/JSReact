@@ -4,7 +4,7 @@ import {Container, Button, Card} from 'react-bootstrap';
 import {FaRegWindowClose} from 'react-icons/fa';
 import UsersAccount from "./users_account";
 import axios from 'axios'
-import PersonalPage from "./personale_page";
+
 
 export default class SelfIntro extends Component{
     constructor(props){
@@ -45,7 +45,7 @@ export default class SelfIntro extends Component{
         console.log(this.state.post);
         return(
             <>
-            { session && (<Navigate to={`/api/profile/${session}`} replace={true} />) }
+            { session && (<Navigate state={this.state.post} to={`/api/profile/user/${session}`} />) }
                 <Container fluid="fluid" className=" px-0 d-flex flex-column flex-sm-column flex-md-row ">
                     {   
                     this.state.post.map(el=>  

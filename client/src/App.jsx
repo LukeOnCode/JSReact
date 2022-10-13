@@ -8,6 +8,7 @@ import Login from './components/auth/login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import HomePage from './components/layout/home_page';
 import { ProtectedRoute } from './utils/front_utils';
+import PersonalPage from './components/layout/personal_page';
 
 class App extends Component{
   constructor(props){
@@ -30,6 +31,7 @@ class App extends Component{
                   </ProtectedRoute>
                 } 
           />
+            <Route path="/api/profile/user/:user_id" element={<PersonalPage/>} />
         </Routes>
       </div>
     );

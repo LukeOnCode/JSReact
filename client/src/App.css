@@ -57,6 +57,10 @@ height: 70vh;;
 #hidden{
   display: none !important;
 }
+.profile-grd{
+  top: 80% !important;
+  background-image: linear-gradient(to bottom right, rgb(0, 0, 0), rgba(255, 255, 255, 0.427));
+}
 @media screen and (max-width: 376px) {
 .button-ld{
   margin-top: calc(100% - 96%);
